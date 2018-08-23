@@ -6,7 +6,17 @@
   export default {
     name: 'highlighter',
     props: {
-      value: ''
+      value: '',
+      // 末尾是否添加逗号
+      endComma: {
+        type: Boolean,
+        default: false
+      },
+      // 是否为数组模式
+      isArray: {
+        type: Boolean,
+        default: false
+      }
     },
     data () {
       return {
@@ -18,11 +28,10 @@
       const JSONDom = this.$el
       // 获取到格式化后的JSON字符串
       let json = this.getJson(this.value)
-      JSONDom.style.display = 'block'
       /* eslint-disable no-eval */
-      let obj = eval('[' + json + ']')
-      let html = this.ProcessObject(obj[0], 0, false, false, false)
-      JSONDom.innerHTML = `<PRE class='CodeContainer'>${html}</PRE>`
+      const obj = JSON.parse(json)
+      let html = this.ProcessObject(obj, 0, this.isArray, false)
+      JSONDom.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
     },
     methods: {
       getJson (json, options) {
@@ -129,9 +138,9 @@
         }
         return str
       },
-      ProcessObject (obj, indent, addComma, isArray, isPropertyContent) {
+      ProcessObject (obj, indent, isArray, isPropertyContent) {
         let html = ''
-        let comma = (addComma) ? `<span class='Comma'>,</span>` : ''
+        let comma = (this.endComma) ? `<span class='Comma'>,</span>` : ''
         let type = typeof obj
         if (this.IsArray(obj)) {
           if (obj.length === 0) {
@@ -191,8 +200,42 @@
   }
 </script>
 
-<style scoped>
+<style>
   .highlighter {
     display: block;
+    margin: 0px;
+    font-family: 'consolas';
+  }
+  .highlighter .ObjectBrace {
+    color: #00AA00;
+    font-weight: bold;
+  }
+  .highlighter .ArrayBrace {
+    color: #0033FF;
+    font-weight: bold;
+  }
+  .highlighter .PropertyName {
+    color: #CC0000;
+    font-weight: bold;
+  }
+  .highlighter .String {
+    color: #007777;
+  }
+  .highlighter .Number {
+    color: #AA00AA;
+  }
+  .highlighter .Boolean {
+    color: #0000FF;
+  }
+  .highlighter .Function {
+    color: #AA6633;
+    text-decoration: italic;
+  }
+  .highlighter .Null {
+    color: #0000FF;
+  }
+  .highlighter .Comma {
+    color: #000000;
+    font-weight: bold;
   }
 </style>
