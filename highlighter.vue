@@ -26,9 +26,7 @@
     mounted () {
       // 获取到格式化后的JSON字符串
       let json = this.getJson(this.value)
-      /* eslint-disable no-eval */
-      const obj = JSON.parse(json)
-      let html = this.ProcessObject(obj, 0, this.isArray, false)
+      let html = this.ProcessObject(json, 0, this.isArray, false)
       this.$el.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
     },
     methods: {

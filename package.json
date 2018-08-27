@@ -1,6 +1,6 @@
 {
   "name": "code-highlighter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "代码着色高亮",
   "author": "PUGE <my@owo.help>",
   "main": "./index.js",
