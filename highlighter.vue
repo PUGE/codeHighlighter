@@ -24,14 +24,12 @@
       }
     },
     mounted () {
-      // 获取DOM元素
-      const JSONDom = this.$el
       // 获取到格式化后的JSON字符串
       let json = this.getJson(this.value)
       /* eslint-disable no-eval */
       const obj = JSON.parse(json)
       let html = this.ProcessObject(obj, 0, this.isArray, false)
-      JSONDom.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
+      this.$el.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
     },
     methods: {
       getJson (json, options) {
@@ -40,42 +38,24 @@
         let pad = 0
         let PADDING = '    '
         options = options || {}
-        if (options.newlineAfterColonIfBeforeBraceOrBracket === true) {
-          options.newlineAfterColonIfBeforeBraceOrBracket = true
-        } else {
-          options.newlineAfterColonIfBeforeBraceOrBracket = false
-        }
-        if (options.spaceAfterColon === false) {
-          options.spaceAfterColon = false
-        } else {
-          options.spaceAfterColon = true
-        }
         if (typeof json !== 'string') {
           json = JSON.stringify(json)
         } else {
-          json = JSON.parse(json)
-          json = JSON.stringify(json)
+          // 深拷贝
+          json = JSON.parse(JSON.stringify(json))
         }
         /* eslint-disable no-useless-escape */
-        reg = /([\{\}])/g
-        json = json.replace(reg, '\r\n$1\r\n')
-        reg = /([\[\]])/g
-        json = json.replace(reg, '\r\n$1\r\n')
-        reg = /(\,)/g
-        json = json.replace(reg, '$1\r\n')
-        reg = /(\r\n\r\n)/g
-        json = json.replace(reg, '\r\n')
-        reg = /\r\n\,/g
-        json = json.replace(reg, ',')
+        json = json.replace(/([\{\}])/g, '\r\n$1\r\n')
+        json = json.replace(/([\[\]])/g, '\r\n$1\r\n')
+        json = json.replace(/(\,)/g, '$1\r\n')
+        json = json.replace(/(\r\n\r\n)/g, '\r\n')
+        json = json.replace(/\r\n\,/g, ',')
         if (!options.newlineAfterColonIfBeforeBraceOrBracket) {
-          reg = /\:\r\n\{/g
-          json = json.replace(reg, ':{')
-          reg = /\:\r\n\[/g
-          json = json.replace(reg, ':[')
+          json = json.replace(/\:\r\n\{/g, ':{')
+          json = json.replace(/\:\r\n\[/g, ':[')
         }
         if (options.spaceAfterColon) {
-          reg = /\:/g
-          json = json.replace(reg, ':')
+          json = json.replace(/\:/g, ':')
         }
         (json.split('\r\n')).forEach(function (node, index) {
           let i = 0,
