@@ -24,12 +24,18 @@
       }
     },
     mounted () {
-      // 获取到格式化后的JSON字符串
-      let json = this.getJson(this.value)
-      let html = this.ProcessObject(json, 0, this.isArray, false)
-      this.$el.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
+      this.creatElement()
     },
     methods: {
+      creatElement () {
+        // console.log(this.value)
+        // 获取到格式化后的JSON字符串
+        let json = this.getJson(this.value)
+        // console.log(json)
+        let html = this.ProcessObject(json, 0, this.isArray, false)
+        // console.log(html)
+        this.$el.innerHTML = `<PRE class='highlighter'>${html}</PRE>`
+      },
       getJson (json, options) {
         let reg = null
         let formatted = ''
@@ -120,6 +126,7 @@
         let html = ''
         let comma = (this.endComma) ? `<span class='Comma'>,</span>` : ''
         let type = typeof obj
+        // console.log(type)
         if (this.IsArray(obj)) {
           if (obj.length === 0) {
             html += this.GetRow(indent, `<span class='ArrayBrace'>[ ]</span>` + comma, isPropertyContent)
@@ -164,6 +171,7 @@
                     if (type === 'undefined') {
                       html += this.FormatLiteral('undefined', '', comma, indent, isArray, 'Null')
                     } else {
+                      console.log(obj)
                       html += this.FormatLiteral(obj, `"`, comma, indent, isArray, 'String')
                     }
                   }
@@ -173,6 +181,11 @@
           }
         }
         return html
+      }
+    },
+    watch: {
+      value () {
+        this.creatElement()
       }
     }
   }
