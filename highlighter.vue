@@ -16,6 +16,15 @@
       isArray: {
         type: Boolean,
         default: false
+      },
+      // 分隔符
+      padding: {
+        type: String,
+        default: '  '
+      },
+      spacing: {
+        type: String,
+        default: '  '
       }
     },
     data () {
@@ -40,7 +49,6 @@
         let reg = null
         let formatted = ''
         let pad = 0
-        let PADDING = '    '
         options = options || {}
         if (typeof json !== 'string') {
           json = JSON.stringify(json)
@@ -61,11 +69,9 @@
         if (options.spaceAfterColon) {
           json = json.replace(/\:/g, ':')
         }
-        (json.split('\r\n')).forEach(function (node, index) {
-          let i = 0,
-            indent = 0,
-            padding = ''
-
+        const jsonArr = json.split('\r\n')
+        jsonArr.forEach((node, index) => {
+          let i = 0, indent = 0, padding = ''
           if (node.match(/\{$/) || node.match(/\[$/)) {
             indent = 1
           } else if (node.match(/\}/) || node.match(/\]/)) {
@@ -75,9 +81,8 @@
           } else {
             indent = 0
           }
-
           for (i = 0; i < pad; i++) {
-            padding += PADDING
+            padding += this.padding
           }
 
           formatted += padding + node + '\r\n'
@@ -124,9 +129,10 @@
       },
       ProcessObject (obj, indent, isArray, isPropertyContent) {
         let html = ''
+        // 判断尾部逗号
         let comma = (this.endComma) ? `<span class='Comma'>,</span>` : ''
         let type = typeof obj
-        // console.log(type)
+        // 判断是否为数组
         if (this.IsArray(obj)) {
           if (obj.length === 0) {
             html += this.GetRow(indent, `<span class='ArrayBrace'>[ ]</span>` + comma, isPropertyContent)
@@ -138,6 +144,7 @@
             html += this.GetRow(indent, `<span class='ArrayBrace'>]</span>` + comma)
           }
         } else {
+          
           if (type === 'object' && obj == null) {
             html += this.FormatLiteral('null', '', comma, indent, isArray, 'Null')
           } else {
@@ -153,7 +160,7 @@
                 html += this.GetRow(indent, `<span class='ObjectBrace'>{</span>`, isPropertyContent)
                 let j = 0
                 for (let prop in obj) {
-                  html += this.GetRow(indent + 1, `<span class='PropertyName'>${prop}</span>: ` + this.ProcessObject(obj[prop], indent + 1, ++j < numProps, false, true))
+                  html += this.GetRow(indent + 1, `<span class='PropertyName'>${prop}</span><span class="spacing">: </span>` + this.ProcessObject(obj[prop], indent + 1, ++j < numProps, false, true))
                 }
                 html += this.GetRow(indent, `<span class='ObjectBrace'>}</span>` + comma)
               }
@@ -228,5 +235,8 @@
   .highlighter .Comma {
     color: #ffffff;
     font-weight: bold;
+  }
+  .highlighter .spacing {
+    color: #ffffff;
   }
 </style>
