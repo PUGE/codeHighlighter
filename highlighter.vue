@@ -128,8 +128,11 @@
       }
     },
     watch: {
-      value () {
-        this.creatElement()
+      value: {
+        handler: function (val, oldVal) {
+          this.creatElement()
+        },
+        deep: true
       }
     }
   }
