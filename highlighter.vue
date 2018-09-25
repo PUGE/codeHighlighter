@@ -138,7 +138,7 @@
 <style>
 .highlighter {
   width: 100%;
-  height: 100%;
+  height: auto;
   overflow: auto;
   display: block;
   font-size: 12.025px;
