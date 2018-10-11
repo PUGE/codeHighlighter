@@ -38,6 +38,11 @@
         const type = typeof json
         switch (type) {
           case 'object': {
+            // 判断是否为undefind或null
+            if (json === undefined || json === null) {
+              console.error(`数据为:${json}`)
+              return ''
+            }
             // 判断是数组还是对象
             if (Array.isArray(json)) return this.parseArray(json, padding, atLast)
             else return this.parseJson(json, padding, atLast)
@@ -60,6 +65,7 @@
           // 是否是最后一项
           const atLast = (index === keyListLestIndex)
           formatted += `${padding}<span class="property-name">"${key}"</span>:`
+          console.log(value, valueType)
           switch (valueType) {
             case 'string': {
               if (atLast) formatted += `${this.spacing}<span class="string">"${value}</span>"\r\n`
@@ -67,6 +73,12 @@
               break
             }
             case 'object': {
+              // null 和 undefined 处理
+              if (value === undefined || value === null) {
+                if (atLast) formatted += `${this.spacing}<span class="null">null</span>\r\n`
+                else formatted += `${this.spacing}<span class="null">null</span>,\r\n`
+                break
+              }
               if (Array.isArray(value)) formatted += this.spacing + this.parseArray(value, padding + this.padding, atLast)
               else formatted += this.spacing + this.parseJson(value, padding + this.padding, atLast)
               break
@@ -169,6 +181,9 @@
   color: #0000FF;
 }
 .number {
-    color: #AA00AA;
+  color: #AA00AA;
+}
+.null {
+  color: #0000FF;
 }
 </style>
