@@ -1,5 +1,5 @@
 <template>
-  <pre :contenteditable="contenteditable" class="highlighter" spellcheck ="false" v-html="html"></pre>
+  <pre :contenteditable="contenteditable" @input="inputEvent" class="highlighter" spellcheck ="false" v-html="html"></pre>
 </template>
 
 <script>
@@ -31,6 +31,9 @@
       this.creatElement()
     },
     methods: {
+      inputEvent () {
+        this.$emit('input', this.$el.innerText)
+      },
       creatElement () {
         this.html = this.getJsonText(this.value, this.padding, true)
       },
