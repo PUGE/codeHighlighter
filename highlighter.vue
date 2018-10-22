@@ -34,11 +34,11 @@
     },
     methods: {
       inputEvent () {
-        const innerText = JSON.stringify(this.$el.innerText)
+        const innerData = JSON.parse(this.$el.innerText)
         // 过滤没有改变的事件向外冒泡
-        if (innerText !== this.temp) {
-          this.temp = innerText
-          this.$emit('input', this.$el.innerText)
+        if (this.$el.innerText !== this.temp) {
+          this.temp = this.$el.innerText
+          this.$emit('input', innerData)
         }
       },
       creatElement () {
