@@ -1,5 +1,5 @@
 <template>
-  <pre :contenteditable="contenteditable" @input="inputEvent" class="highlighter" spellcheck ="false" v-html="html"></pre>
+  <pre :contenteditable="contenteditable" @blur="inputEvent" class="highlighter" spellcheck ="false" v-html="html"></pre>
 </template>
 
 <script>
@@ -24,15 +24,22 @@
     },
     data () {
       return {
-        html: ''
+        html: '',
+        temp: ''
       }
     },
     mounted () {
+      this.temp = JSON.stringify(this.value)
       this.creatElement()
     },
     methods: {
       inputEvent () {
-        this.$emit('input', this.$el.innerText)
+        const innerText = JSON.stringify(this.$el.innerText)
+        // 过滤没有改变的事件向外冒泡
+        if (innerText !== this.temp) {
+          this.temp = innerText
+          this.$emit('input', this.$el.innerText)
+        }
       },
       creatElement () {
         this.html = this.getJsonText(this.value, this.padding, true)
