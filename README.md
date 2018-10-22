@@ -57,3 +57,7 @@ $ npm install --save @puge/highlight
 默认值: false
 
 是否可被编辑
+
+### 事件
+
+input 编辑结束事件
