@@ -160,7 +160,7 @@
   }
 </script>
 
-<style scoped>
+<style>
 .highlighter {
   width: 100%;
   height: auto;
@@ -172,28 +172,28 @@
   word-wrap: break-word;
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
-.object-brace {
+.highlighter .object-brace {
   color: #00AA00;
   font-weight: bold;
 }
-.array-brace {
+.highlighter .array-brace {
   color: #0033FF;
   font-weight: bold;
 }
-.property-name {
+.highlighter .property-name {
   color: #CC0000;
   font-weight: bold;
 }
-.string {
+.highlighter .string {
   color: #007777;
 }
-.boolean {
+.highlighter .boolean {
   color: #0000FF;
 }
-.number {
+.highlighter .number {
   color: #AA00AA;
 }
-.null {
+.highlighter .null {
   color: #0000FF;
 }
 </style>
