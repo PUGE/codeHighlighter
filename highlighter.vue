@@ -160,7 +160,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .highlighter {
   width: 100%;
   height: auto;
