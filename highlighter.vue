@@ -29,8 +29,10 @@
       }
     },
     mounted () {
-      this.temp = JSON.stringify(this.value)
-      this.creatElement()
+      if (this.value !== '') {
+        this.temp = JSON.stringify(this.value)
+        this.creatElement()
+      }
     },
     methods: {
       inputEvent () {
