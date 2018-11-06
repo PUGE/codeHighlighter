@@ -20,6 +20,11 @@
       contenteditable: {
         type: Boolean,
         default: false
+      },
+      // 紧凑显示 
+      tight: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -77,7 +82,7 @@
           // 是否是最后一项
           const atLast = (index === keyListLestIndex)
           formatted += `${padding}<span class="property-name">"${key}"</span>:`
-          console.log(value, valueType)
+          // console.log(value, valueType)
           switch (valueType) {
             case 'string': {
               if (atLast) formatted += `${this.spacing}<span class="string">"${value}</span>"\r\n`
@@ -116,6 +121,7 @@
       parseArray (array, padding, atLast) {
         let formatted = ''
         const arrayLestIndex = array.length - 1
+        // 判断紧凑显示
         formatted += '<span class="array-brace">[</span>\r\n'
         array.forEach((value, index) => {
           const valueType = typeof value
@@ -123,8 +129,8 @@
           const atLast = (index === arrayLestIndex)
           switch (valueType) {
             case 'string': {
-              if (atLast) formatted += `${padding}<span class="string">"${value}</span>"\r\n`
-              else formatted += `${padding}"<span class="string">${value}</span>",\r\n`
+              if (atLast) formatted += `${padding}<span class="string">${value}</span>\r\n`
+              else formatted += `${padding}<span class="string">${value}</span>,\r\n`
               break
             }
             case 'object': {
@@ -148,6 +154,15 @@
         // 判断是否为最后一项以便决定是否加上逗号
         if (atLast) formatted += `${padding.substring(2)}<span class="array-brace">]</span>\r\n`
         else formatted += `${padding.substring(2)}<span class="array-brace">]</span>,\r\n`
+        if (this.tight) {
+          array.forEach((value, index) => {
+            if (typeof value === 'string') {
+              formatted = formatted.replace(`\r\n${padding}<span class="string">${value}`, `<span class="string">${value}`)
+              formatted = formatted.replace(`<span class="string">${value}</span>\r\n${padding.substring(2)}`, `<span class="string">${value}</span>`)
+            }
+            console.log(formatted)
+          })
+        }
         return formatted
       }
     },
